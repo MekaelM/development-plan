@@ -75,6 +75,7 @@ main{display:grid;gap:40px;margin-top:32px}
 .block h4 span{color:var(--muted);font-weight:400}
 .block ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 .block li{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+a.btn{text-decoration:none;display:inline-block}
 .drills{flex-basis:100%;margin-top:2px}
 .drills>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted);user-select:none}
 .drills>summary::-webkit-details-marker{display:none}
@@ -157,6 +158,7 @@ textarea{width:100%;min-height:96px;font:inherit;padding:12px;border:1px solid v
   <nav role="tablist">
     <button role="tab" data-tab="today" aria-selected="true">Today</button>
     <button role="tab" data-tab="plan" aria-selected="false">Plan</button>
+    <button role="tab" data-tab="jump" aria-selected="false">Jump</button>
     <button role="tab" data-tab="tests" aria-selected="false">Tests</button>
     <button role="tab" data-tab="moves" aria-selected="false">Moves</button>
   </nav>
@@ -165,6 +167,7 @@ textarea{width:100%;min-height:96px;font:inherit;padding:12px;border:1px solid v
 <main>
   <section id="tab-today" class="stack"></section>
   <section id="tab-plan" class="stack" hidden></section>
+  <section id="tab-jump" class="stack" hidden></section>
   <section id="tab-tests" class="stack" hidden></section>
   <section id="tab-moves" class="stack" hidden></section>
   <p class="save-note" id="saveNote">Loading your progress…</p>
@@ -182,6 +185,57 @@ const WEEK_LESSON={1:IDS[1],2:IDS[18],3:IDS[33]};
 const PLAY='<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg>';
 const watchLink=(id,label,aria)=>`<a class="watch" href="${COURSE_URL}${id}" target="_blank" rel="noopener" aria-label="${aria}">${PLAY}${label}</a>`;
 const seriesWatch=(n,short)=>watchLink(seriesLesson(n),short?"S"+n:"Watch",`Watch the Series ${n} video`);
+
+/* ---------- The Vert Code (PJF Performance) ---------- */
+const VC_BASE="https://online.pjfperformance.net/workout-plans/paulfabritz-the-vert-code-";
+const VC=[{n:1,slug:"phase-1",weeks:2},{n:2,slug:"body-weight-phase-2",weeks:2},{n:3,slug:"body-weight-phase-3",weeks:4},{n:4,slug:"phase-4",weeks:4}];
+const VC_DAYS=[["Monday","Lower Body"],["Tuesday","Core/Mobility"],["Wednesday","Lower Body"],["Thursday","Core/Mobility"],["Friday","Lower Body"]];
+const VC_ALL=[];VC.forEach(p=>{for(let w=1;w<=p.weeks;w++)VC_DAYS.forEach((d,i)=>VC_ALL.push({id:`vc${p.n}w${w}d${i+1}`,phase:p,week:w,day:d[0],focus:d[1]}));});
+const vcUrl=p=>VC_BASE+p.slug+"/";
+function vcNext(){return VC_ALL.find(x=>!state.done[x.id]);}
+function jumpTeaser(){
+  const x=vcNext(); if(!x) return "";
+  return `<article class="card stack"><div class="session-head"><div class="stack" style="gap:4px"><div class="eyebrow">Next jump workout · The Vert Code</div>
+    <h3>Phase ${x.phase.n} · Week ${x.week} · ${x.day}: ${x.focus}</h3></div></div>
+    <div class="actions"><a class="btn" href="${vcUrl(x.phase)}" target="_blank" rel="noopener">Open on PJF</a><button class="btn" data-goto="jump">See jump plan</button></div></article>`;
+}
+function renderJump(){
+  const el=document.getElementById("tab-jump");
+  const done=VC_ALL.filter(x=>state.done[x.id]).length, x=vcNext();
+  const nextCard=x?`<article class="card stack">
+      <div class="session-head"><div class="stack" style="gap:4px">
+        <div class="eyebrow">Next workout · Phase ${x.phase.n} of 4 · Week ${x.week} of ${x.phase.weeks}</div>
+        <h2>${x.day}: ${x.focus}</h2>
+        <p class="muted">On PJF, pick <b>Week ${x.week}</b> in the week menu, then <b>${x.day}</b>.</p></div>
+        <span class="tag">${done} / ${VC_ALL.length} done</span></div>
+      <div class="actions"><a class="btn good" href="${vcUrl(x.phase)}" target="_blank" rel="noopener">Open workout on PJF</a>
+      <button class="btn" data-toggle="${x.id}">Mark workout done</button></div></article>`
+    :`<article class="card stack"><h2>All 4 phases done</h2><p class="muted">Retest your vertical on the Tests tab.</p></article>`;
+  el.innerHTML=`<div class="phase-intro"><div class="eyebrow">PJF Performance · 12 weeks · 5 days a week</div><h2>The Vert Code</h2>
+    <p class="muted">Four phases, done in order. Each week alternates Lower Body and Core/Mobility days, Monday to Friday. The exercises, sets and videos stay in PJF; this tracks where you are.</p></div>
+  ${nextCard}
+  <article class="card stack"><h3>Your week with both plans</h3>
+    <div class="tbl-wrap"><table style="min-width:420px"><thead><tr><th>Day</th><th>Jump (Vert Code)</th><th>Handles</th></tr></thead><tbody>
+      <tr><td>Mon</td><td>Lower Body, done first</td><td>Handle work only, no sprints</td></tr>
+      <tr><td>Tue</td><td>Core/Mobility</td><td>Full session</td></tr>
+      <tr><td>Wed</td><td>Lower Body, done first</td><td>Handle work only, no sprints</td></tr>
+      <tr><td>Thu</td><td>Core/Mobility</td><td>Full session</td></tr>
+      <tr><td>Fri</td><td>Lower Body, done first</td><td>Handle work only, no sprints</td></tr>
+      <tr><td>Sat</td><td>Rest</td><td>Full session or play</td></tr>
+      <tr><td>Sun</td><td>Rest</td><td>Rest</td></tr></tbody></table></div>
+    <p class="muted">Jump on fresh legs. On Lower Body days, skip the handle plan's sprints and conditioning so your legs recover for the next jump day.</p></article>
+  <article class="card stack"><h3>Rules for jump days</h3><ul class="rules">
+    <li>Rest fully between sets. This is power work, not conditioning. If you're still tired when the rest is up, wait longer.</li>
+    <li>Every rep fast and crisp. Don't chase a burn.</li>
+    <li>Stop or swap any exercise that causes joint pain in the knees, back or ankles.</li>
+    <li>Cut the reps back if you haven't been training hard lately.</li>
+    <li>Practise jump mechanics outside the workouts using the video in PJF's Resources.</li></ul></article>
+  ${VC.map(p=>{const days=VC_ALL.filter(d=>d.phase===p);const n=days.filter(d=>state.done[d.id]).length;const open=x&&x.phase===p;
+    return `<details class="week" ${open?"open":""}><summary><div class="week-title"><span class="eyebrow">${p.weeks} weeks</span><b>Phase ${p.n}</b></div><span class="pill">${n} / ${days.length}</span></summary>
+    <div class="week-body"><div><a class="watch" href="${vcUrl(p)}" target="_blank" rel="noopener">${PLAY}Open Phase ${p.n} on PJF</a></div>
+    ${Array.from({length:p.weeks},(_,i)=>i+1).map(w=>`<p class="week-focus" style="margin-top:6px"><b>Week ${w}</b></p>`+days.filter(d=>d.week===w).map(d=>`<div class="day ${state.done[d.id]?"isdone":""}"><input type="checkbox" id="cb-${d.id}" data-check="${d.id}" ${state.done[d.id]?"checked":""} aria-label="Phase ${p.n} week ${w} ${d.day} done"><div class="day-main"><span style="font-weight:500;font-size:.95rem">${d.day}</span><span class="day-sum">${d.focus}</span></div></div>`).join("")).join("")}
+    </div></details>`;}).join("")}`;
+}
 
 // [drills, tip, common mistakes] per series
 const DRILLS = {
@@ -356,7 +410,9 @@ const TESTS=[
   {id:"t4",name:"Full-court speed dribble, right hand",how:"Baseline to baseline",unit:"sec",better:"down"},
   {id:"t5",name:"Full-court speed dribble, left hand",how:"Baseline to baseline",unit:"sec",better:"down"},
   {id:"t6",name:"Pull-up off one dribble",how:"10 each side from the elbows",unit:"/ 20",better:"up"},
-  {id:"t7",name:"Free throws",how:"20 shots, each after a full-court sprint",unit:"/ 20",better:"up"}
+  {id:"t7",name:"Free throws",how:"20 shots, each after a full-court sprint",unit:"/ 20",better:"up"},
+  {id:"t8",name:"Standing vertical jump",how:"Best of 3, measured on a wall",unit:"in",better:"up"},
+  {id:"t9",name:"Running vertical jump",how:"Best of 3, measured on a wall",unit:"in",better:"up"}
 ];
 const CHECKS=[["c0","Start"],["c3","End Wk 3"],["c6","End Wk 6"],["c8","End Wk 8"]];
 
@@ -429,7 +485,7 @@ function renderToday(){
   const next=ALL.find(d=>!state.done[d.id]);
   const el=document.getElementById("tab-today");
   if(!next){el.innerHTML=`<article class="card stack"><h2>All 8 weeks done</h2><p>Keep the handle sharp: 3 days a week, 20 minutes, rotating one course week per day (Week 1, 2, 3). Play as much as you can, and retest every 4 weeks on the Tests tab.</p></article>`;return;}
-  el.innerHTML=`<p class="muted">Your next session. Rest one day a week: stretch, ice if sore, and watch your film.</p>`+sessionCard(next,true)+guardRules();
+  el.innerHTML=`<p class="muted">Your next session. Rest one day a week: stretch, ice if sore, and watch your film.</p>`+sessionCard(next,true)+jumpTeaser()+guardRules();
 }
 function guardRules(){
   return `<article class="card stack"><h3>Rules on every rep</h3><ul class="rules">
@@ -476,7 +532,7 @@ function renderHeader(){
 function renderAll(){
   const a=document.activeElement;
   const typing=a&&(a.matches("[data-test]")||a.id==="pkg");
-  renderHeader();renderToday();renderPlan();if(!typing)renderTests();renderMoves();
+  renderHeader();renderToday();renderPlan();renderJump();if(!typing)renderTests();renderMoves();
 }
 
 /* ---------- copy ---------- */
@@ -497,7 +553,7 @@ async function copyText(txt){
 /* ---------- events ---------- */
 let current="today";
 function showTab(name){current=name;document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===name));
-  ["today","plan","tests","moves"].forEach(t=>document.getElementById("tab-"+t).hidden=t!==name);
+  ["today","plan","jump","tests","moves"].forEach(t=>document.getElementById("tab-"+t).hidden=t!==name);
   try{localStorage.setItem(LS+".tab",name);}catch(e){} window.scrollTo(0,0);}
 document.querySelector("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(b)showTab(b.dataset.tab);});
 document.addEventListener("click",e=>{
