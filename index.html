@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mekael's Development Plan</title>
+<meta name="description" content="Mekael's Development Plan: an 8-week basketball guard training program with daily sessions, ball-handling series, benchmarks and progress tracking.">
+<meta property="og:title" content="Mekael's Development Plan">
+<meta property="og:description" content="Mekael's Development Plan: an 8-week basketball guard training program with daily sessions, ball-handling series, benchmarks and progress tracking.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0b0c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23111113'/%3E%3Cpath d='M2 16h28M16 2v28M6 6c6 5 6 15 0 20M26 6c-6 5-6 15 0 20' stroke='%23fff' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: single quiet column, hairline dividers instead of boxes, monochrome ink with one cobalt accent for actions */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --line:#ebebef; --ink:#111113; --muted:#8a8a93; --soft:#f4f4f6;
+  --accent:#3355ff; --accent-soft:rgba(51,85,255,.08); --on-ink:#ffffff;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b0b0c; --surface:#0b0b0c; --line:#1f1f23; --ink:#ededf0; --muted:#77777f; --soft:#161618;
+  --accent:#8aa2ff; --accent-soft:rgba(138,162,255,.12); --on-ink:#0b0b0c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b0b0c; --surface:#0b0b0c; --line:#1f1f23; --ink:#ededf0; --muted:#77777f; --soft:#161618;
+  --accent:#8aa2ff; --accent-soft:rgba(138,162,255,.12); --on-ink:#0b0b0c; color-scheme:dark}
+
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;letter-spacing:-.008em;
+  -webkit-font-smoothing:antialiased;
+  padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-block:0 72px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.15;font-weight:600;letter-spacing:-.025em}
+h1{font-size:1.9rem}
+h2{font-size:1.35rem}
+h3{font-size:1.05rem;letter-spacing:-.01em}
+.eyebrow{font-size:.78rem;font-weight:500;color:var(--muted);letter-spacing:0}
+.muted{color:var(--muted)}
+p{margin:0}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:36px 0}
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.head-row>div:first-child{display:grid;gap:4px}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.count span:first-child{color:var(--ink);font-weight:600}
+.bar{height:2px;background:var(--line);margin-top:20px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--ink);width:0;transition:width .4s ease}
+nav{display:flex;gap:24px;border-bottom:1px solid var(--line)}
+nav button{font:inherit;font-size:.9rem;font-weight:500;background:none;border:0;color:var(--muted);padding:14px 0 12px;cursor:pointer;
+  border-bottom:1.5px solid transparent;margin-bottom:-1px}
+nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+main{display:grid;gap:40px;margin-top:32px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.stack{display:grid;gap:16px}
+.save-note{font-size:.75rem;color:var(--muted);text-align:center}
+
+.session-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.tag{font-size:.78rem;color:var(--muted)}
+.tag.done{color:var(--ink);font-weight:500}
+.block{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:8px}
+.block h4{margin:0;font-size:.85rem;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.block h4 span{color:var(--muted);font-weight:400}
+.block ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.block li{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.li-text{min-width:0}
+.li-watch{display:flex;gap:12px;flex-shrink:0}
+.s{font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;margin-right:2px}
+.watch{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;font-weight:500;color:var(--accent);text-decoration:none;white-space:nowrap}
+.watch:hover{text-decoration:underline}
+.watch svg{width:8px;height:8px;fill:currentColor}
+.actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:8px}
+.btn{font:inherit;font-size:.88rem;font-weight:500;cursor:pointer;border-radius:8px;padding:9px 16px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.btn:hover{background:var(--soft)}
+.btn.primary,.btn.good{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.btn.primary:hover,.btn.good:hover{opacity:.88;background:var(--ink)}
+
+.phase{display:grid;gap:8px}
+.phase-intro{display:grid;gap:6px;padding-bottom:8px}
+details.week{border-top:1px solid var(--line)}
+.phase details.week:last-child{border-bottom:1px solid var(--line)}
+details.week>summary{list-style:none;cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;align-items:center}
+details.week>summary::-webkit-details-marker{display:none}
+.week-title{display:grid;gap:0;min-width:0}
+.week-title b{font-size:1rem;font-weight:500}
+.week-body{padding:0 0 18px;display:grid;gap:10px}
+.week-focus{font-size:.9rem;color:var(--muted)}
+.day{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding-top:10px}
+.day input{width:18px;height:18px;margin-top:2px;accent-color:var(--ink)}
+.day-main{min-width:0;display:grid;gap:0}
+.day-main button{all:unset;cursor:pointer;font-weight:500;font-size:.95rem}
+.day-main button:hover{color:var(--accent)}
+.day-main button:focus-visible{outline:2px solid var(--accent)}
+.day-sum{font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+.day.isdone .day-main button{color:var(--muted)}
+.pill{font-size:.85rem;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:.75rem;color:var(--muted);font-weight:500}
+td b{font-weight:500}
+td input{width:64px;font:inherit;font-size:.9rem;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--ink)}
+.unit{font-size:.75rem;color:var(--muted)}
+textarea{width:100%;min-height:96px;font:inherit;padding:12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink)}
+
+.moves{display:grid;gap:0}
+.move{display:grid;grid-template-columns:32px 1fr;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
+.move:last-child{border-bottom:0}
+.move .s{font-size:.9rem;line-height:1.6}
+.move-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.move b{font-weight:500}
+.move span{font-size:.88rem;color:var(--muted)}
+.rules{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--on-ink);
+  padding:9px 16px;border-radius:8px;font-size:.85rem;font-weight:500;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media (max-width:480px){h1{font-size:1.6rem}.card{padding:20px}nav{gap:20px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="head-row">
+    <div>
+      <div class="eyebrow">Built on Build Elite Handles in 21 Days</div>
+      <h1>Mekael's Development Plan</h1>
+    </div>
+    <div class="count"><span id="doneCount">0</span> / <span id="totalCount">0</span> sessions</div>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+  <nav role="tablist">
+    <button role="tab" data-tab="today" aria-selected="true">Today</button>
+    <button role="tab" data-tab="plan" aria-selected="false">Plan</button>
+    <button role="tab" data-tab="tests" aria-selected="false">Tests</button>
+    <button role="tab" data-tab="moves" aria-selected="false">Moves</button>
+  </nav>
+</header>
+
+<main>
+  <section id="tab-today" class="stack"></section>
+  <section id="tab-plan" class="stack" hidden></section>
+  <section id="tab-tests" class="stack" hidden></section>
+  <section id="tab-moves" class="stack" hidden></section>
+  <p class="save-note" id="saveNote">Loading your progress…</p>
+</main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const S = ["","Pounds","V Dribbles","Pocket Dribbles","Ball Manipulation","Single Moves","V Dribble Single Moves","Pocket Dribble Single Moves","Double Move Combos","Triple Move Combos","Pound V Dribble Combos","Skips on the Move","Single Moves on the Move","Double Moves on the Move","Triple Moves on the Move (tight)","V Dribble Combos on the Move","Ball Manipulation on the Move","Quick Change of Direction","In and Outs","Punch Dribble","Snatch Back Moves","Float Dribbles","Hesitations","Jab Single Moves","Scissor Step Single Moves","Heavy Step Single Moves","Delayed Pace Moves","Shifty Double Moves","Tween Double Moves","Crossover Double Moves","Behind the Back Double Moves","Punch Moves","Cross Step Punch Moves","Triple Combos on the Move (running)","Rhythm Combos","Combos into Snatch Back","Snatch Back into Combo","Scissor Step Combos","Cross Step Dribble Combos","Jab Combos","Misdirection Combos","Advanced Stop and Go Combos","Float into Elite Combos","Misdirection into Elite Combos","Building Go-to Size Up","Shamgod"];
+
+const COURSE_URL="https://stan.store/course/22ca0853-c170-45e0-bea5-3f7a0f830c81?store=_christianreid_store&lesson_id=";
+const IDS="34708691 38061796 34708693 34708694 34708695 37527185 37527276 37528788 37529376 37528836 37528892 37680285 39223811 39224437 39224705 39224932 39225090 39670720 38061779 39287047 34708696 38385195 37708393 37709900 34708697 34708698 38385185 37710244 37713050 37708610 39226656 39227318 39227489 40077748 39297311 39298557 37713067 38564614 38385973 38386006 38386184 38385225 38386031 38386225 38584026 39677650 39988390 38385234 39298016".split(" ");
+const seriesLesson=n=>IDS[n<=16?n+1:n<=30?n+2:n+3];
+const WEEK_LESSON={1:IDS[1],2:IDS[18],3:IDS[33]};
+const PLAY='<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg>';
+const watchLink=(id,label,aria)=>`<a class="watch" href="${COURSE_URL}${id}" target="_blank" rel="noopener" aria-label="${aria}">${PLAY}${label}</a>`;
+const seriesWatch=(n,short)=>watchLink(seriesLesson(n),short?"S"+n:"Watch",`Watch the Series ${n} video`);
+
+const GAME_USE = {
+  1:"Base control at every height. Stops you losing the ball in traffic.",2:"Hands moving around the ball. Feeds every move later.",3:"Ball protection and the start of changing pace.",4:"Weak-hand control and tight-space escapes.",
+  5:"Fast, tight single moves.",6:"Quick hands into moves.",7:"Protect, then attack. First taste of pace change.",8:"Two-move speed and tightness.",9:"Pure speed and coordination.",10:"Change of height into combos.",
+  11:"Rhythm with the ball higher.",12:"Moves while moving forward.",13:"Combos with choppy footwork.",14:"Combos in tight space on the move.",15:"High pound to low combo while moving.",16:"Manipulation while moving.",
+  17:"Change direction fast and low.",18:"Sell the drive, then counter.",19:"Stop on a dime vs aggressive defenders. Creates separation.",20:"Quick stop and snatch back for space.",21:"Rhythm and pace. Relax the defender.",22:"Freeze the defender, then go.",
+  23:"Jab after the move. Strong in transition.",24:"Extra layer on simple moves to throw off timing.",25:"Stay relaxed vs aggressive defenders, throw off their timing.",26:"Delayed pace to blow by.",27:"Twitchy doubles that are hard to stay in front of.",28:"Counter off the tween.",29:"Counter off the crossover.",30:"Counter off the behind-the-back.",
+  31:"Sell the drive with a punch. Creates space vs aggressive defenders.",32:"Protect the ball and set up the break-down.",33:"Combos at running speed.",34:"Float then explode. Relieves pressure.",35:"Combo to shift, snatch back to create space.",36:"Stop, then combo to get them off balance.",37:"Scissor step into combos.",38:"Cross step to sell, then combo.",
+  39:"Jab counters. Hard to guard in transition and going downhill.",40:"Get outside the defender's frame for a shot or a better angle.",41:"Stop and go. Brakes, then gas.",42:"Pace plus quick combos.",43:"Misdirection into elite combos.",44:"Your go-to size-up package with options out of it.",45:"Quick direction change, ball-control test."
+};
+
+const sl = arr => arr.map(n => `<span class="s">S${n}</span> ${S[n]}`);
+
+const ADD = {
+  w1a:{name:"Guard add-on: Shot",time:"15 min",items:["Form shooting close to the rim: 30 makes from 5 spots","25 free throws, record makes"]},
+  w1b:{name:"Guard add-on: Finish",time:"15 min",items:["Mikan drill: 2 × 30 s each (regular, then reverse)","10 weak-hand layups each side off 3 dribbles"]},
+  w2:{name:"Guard add-on: Moves to the rim",time:"15 min",items:["Take the first 2 series from today and finish every rep with a layup: 5 makes each side","25 free throws, record makes"]},
+  w3:{name:"Guard add-on: Pull-ups",time:"15 min",items:["Take 2 combos from today into an elbow pull-up: 5 makes each side","25 free throws, record makes"]}
+};
+
+function courseDay(id,label,series,add,extra){
+  const blocks=[{name:"Handle (course)",time:"40–50 min",items:sl(series).concat(["Goal: 10 clean, fast reps in a row on every drill"])}];
+  if(extra) blocks[0].items.splice(series.length,0,...extra);
+  blocks.push(ADD[add]);
+  return {id,label,sum:series.map(n=>"S"+n).join(" › "),blocks};
+}
+
+const w1=[[1,2,4,16,6,5,12],[1,3,4,16,7,5,12],[1,2,6,3,7,5,12],[2,3,6,7,11,8,13],[2,5,7,12,8,13,9,14],[1,4,16,11,10,15],[1,5,12,8,9,14,15]];
+const w2A=[17,18,21,22,24,28,29], w2B=[19,20,23,25,26,27,30];
+const w3A=[31,33,35,37,39,41,43], w3B=[32,34,36,38,40,42,44];
+
+const P2 = {
+  A:{label:"Attack the rim",sum:"Moves into finishes",blocks:[
+    {name:"Warm-up handle",time:"10 min",items:sl([1,5,12]).map(x=>x+": one round")},
+    {name:"Moves into finishes",time:"35 min",items:[
+      `<span class="s">S18</span> In-and-out → layup: 5 makes each side`,
+      `<span class="s">S22</span> Hesi → layup or floater: 5 makes each side`,
+      `<span class="s">S25</span> Heavy step cross → finish: 5 makes each side`,
+      `<span class="s">S36</span> Cross stop, tween-cross → floater: 5 makes each side`,
+      "Rotate the finish each rep: regular, reverse, euro, floater"]},
+    {name:"Weak hand",time:"10 min",items:[`<span class="s">S16</span> Ball manipulation on the move: one round`,"20 weak-hand layups"]},
+    {name:"Condition",time:"10 min",items:["Full-court speed dribble × 6, a move at half court, finish every rep"]}]},
+  B:{label:"Create your shot",sum:"Moves into pull-ups",blocks:[
+    {name:"Warm-up handle",time:"10 min",items:sl([2,8,13]).map(x=>x+": one round")},
+    {name:"Moves into pull-ups",time:"35 min",items:[
+      `<span class="s">S19</span> Punch dribble → pull-up: 10 shots each side`,
+      `<span class="s">S20</span> Snatch back → pull-up or step-back: 10 shots each side`,
+      `<span class="s">S34</span> Rhythm combo → pull-up off the float: 10 shots each side`,
+      `<span class="s">S26</span> Delayed pace move → pull-up: 10 shots`,
+      "Write down makes. Target 6 of 10 by Week 6"]},
+    {name:"Tired shots",time:"10 min",items:["Sprint baseline to baseline, then 2 free throws. Repeat 10 times"]}]},
+  C:{label:"Read and react",sum:"Size-ups, decisions, live",blocks:[
+    {name:"Warm-up handle",time:"10 min",items:sl([9,14,27]).map(x=>x+": one round")},
+    {name:"Size-up into a decision",time:"15 min",items:[
+      `<span class="s">S44</span> Size-up at the top vs a chair, 3-dribble limit: 20 reps`,
+      "A partner (or a coin flip) calls the read at the last dribble: rim or pull-up"]},
+    {name:"Live",time:"25 min",items:[
+      "1-on-1 from the wing, 3-dribble limit, first to 7",
+      "Solo option: 10 reps of an S41 stop-and-go combo into a finish",
+      `Full-court vs a pressure defender × 6. Protect with the pocket (<span class="s">S3</span>, <span class="s">S7</span>)`]},
+    {name:"Free throws",time:"5 min",items:["20 free throws, record makes"]}]}
+};
+const P3 = {
+  A:{label:"Signature package",sum:"Size-up + 2 counters into shots",blocks:[
+    {name:"Warm-up",time:"10 min",items:[`<span class="s">S44</span> Full size-up package: 5 each side`]},
+    {name:"Build your package",time:"40 min",items:[
+      "Use the package you wrote down on the Tests tab: 1 size-up + 2 counters (pick counters from S39, S40, S42, S43)",
+      "30 game-speed reps into a shot. Alternate rim and pull-up",
+      "Film 10 reps. Check: low on the combo, the extra twitch, ball below the knees"]},
+    {name:"Free throws",time:"5 min",items:["20 free throws, record makes"]}]},
+  B:{label:"Tired reps",sum:"Combos into shots after sprints",blocks:[
+    {name:"Warm-up",time:"10 min",items:sl([33,15]).map(x=>x+": one round")},
+    {name:"Tired combos",time:"30 min",items:[
+      "4 rounds: sprint 2 lengths → an S41 combo → shot",
+      "Then sprint 2 lengths → an S43 combo → shot",
+      "2 free throws after each round. Count every make"]},
+    {name:"Finisher",time:"10 min",items:["Sideline-to-sideline 17s: 2 sets, 2 min rest"]}]},
+  C:{label:"Play",sum:"Pickup, 1-on-1 or 2-on-2 with goals",blocks:[
+    {name:"Warm-up",time:"10 min",items:sl([1,5,9]).map(x=>x+": one quick round")},
+    {name:"Games",time:"45 min",items:["Pickup, 1-on-1, or 2-on-2","Use your package at least 5 times","Count turnovers and shots at the rim vs pull-ups"]},
+    {name:"After",time:"5 min",items:["Write one thing that worked and one thing to drill next week"]}]}
+};
+
+function rotDay(id,tpl,note){const d=JSON.parse(JSON.stringify(tpl));d.id=id;if(note)d.blocks[0].items.unshift(`<em>${note}</em>`);return d;}
+
+const PHASES=[
+  {key:"p1",name:"Phase 1 · Build the handle",span:"Weeks 1–3",intro:"Run the course as written, plus 15 minutes of guard work each day. You're about halfway through the course, so start at the week you're on. Don't skip the series you've already done; they're the warm-up for what comes next.",
+   weeks:[
+    {n:1,title:"Foundations",focus:"Ball control, speed and tightness. Very little body movement.",
+     days:w1.map((s,i)=>courseDay("w1d"+(i+1),"Day "+(i+1),s,i%2?"w1b":"w1a"))},
+    {n:2,title:"Change of pace and direction",focus:"Throw off the defender's timing. Add shift and twitch.",
+     days:[1,2,3,4,5,6].map(i=>courseDay("w2d"+i,"Day "+i+(i%2?" (A)":" (B)"),i%2?w2A:w2B,"w2"))},
+    {n:3,title:"Shifting weight and elite combos",focus:"Put it together: pace, weight shift, twitches, chained moves.",
+     days:[1,2,3,4,5,6].map(i=>courseDay("w3d"+i,"Day "+i+(i%2?" (A)":" (B)"),i%2?w3A:w3B,"w3",i%2?null:[`<span class="s">S45</span> Shamgod (not in the course schedule, added here)`]))}
+   ]},
+  {key:"p2",name:"Phase 2 · Make it game-ready",span:"Weeks 4–6",intro:"Every move now ends in a shot or a finish. Three session types rotate twice a week. A move you can't score off yet doesn't count as yours.",
+   weeks:[
+    {n:4,title:"Learn it slow",focus:"No defender. Perfect footwork at half speed, then build up.",note:"Week 4: half speed first, full speed only once the footwork is clean."},
+    {n:5,title:"Game speed",focus:"Full speed on every rep. Put a chair where the defender would be.",note:"Week 5: full speed every rep, chair as the defender."},
+    {n:6,title:"Add contact and contests",focus:"Partner contests or a live defender. Track makes.",note:"Week 6: add a partner contest or live defender wherever you can."}
+   ].map(w=>({n:w.n,title:w.title,focus:w.focus,days:["A","B","C","A","B","C"].map((k,i)=>{const d=rotDay(`w${w.n}d${i+1}`,P2[k],w.note);d.label=`Day ${i+1} · ${P2[k].label}`;return d;})}))},
+  {key:"p3",name:"Phase 3 · Your package under pressure",span:"Weeks 7–8",intro:"Build one go-to size-up with two counters, then make it work tired and in real games.",
+   weeks:[{n:7,title:"Build the package",focus:"Pick it, film it, repeat it."},{n:8,title:"Use it in games",focus:"Same rotation. Push the pace and count results."}]
+   .map(w=>({n:w.n,title:w.title,focus:w.focus,days:["A","B","C","A","B","C"].map((k,i)=>{const d=rotDay(`w${w.n}d${i+1}`,P3[k]);d.label=`Day ${i+1} · ${P3[k].label}`;return d;})}))}
+];
+// Phase 2/3 days: sum from template
+PHASES[1].weeks.forEach(w=>w.days.forEach((d,i)=>d.sum=P2["ABCABC"[i]].sum));
+PHASES[2].weeks.forEach(w=>w.days.forEach((d,i)=>d.sum=P3["ABCABC"[i]].sum));
+
+const ALL=[];PHASES.forEach(p=>p.weeks.forEach(w=>w.days.forEach(d=>{d.week=w;d.phase=p;ALL.push(d);})));
+
+const TESTS=[
+  {id:"t1",name:"Ankle pounds, right hand",how:"30 seconds, count dribbles",unit:"count",better:"up"},
+  {id:"t2",name:"Ankle pounds, left hand",how:"30 seconds, count dribbles",unit:"count",better:"up"},
+  {id:"t3",name:"Cross-tween-behind (S9)",how:"30 seconds, clean combos only",unit:"combos",better:"up"},
+  {id:"t4",name:"Full-court speed dribble, right hand",how:"Baseline to baseline",unit:"sec",better:"down"},
+  {id:"t5",name:"Full-court speed dribble, left hand",how:"Baseline to baseline",unit:"sec",better:"down"},
+  {id:"t6",name:"Pull-up off one dribble",how:"10 each side from the elbows",unit:"/ 20",better:"up"},
+  {id:"t7",name:"Free throws",how:"20 shots, each after a full-court sprint",unit:"/ 20",better:"up"}
+];
+const CHECKS=[["c0","Start"],["c3","End Wk 3"],["c6","End Wk 6"],["c8","End Wk 8"]];
+
+/* ---------- state ---------- */
+let state={done:{},tests:{},pkg:""};
+let mode="local", ref=null, dirty=false, saveTimer=null, writing=Promise.resolve();
+const LS="eliteGuardPlan.v1";
+function loadLocal(){try{const v=JSON.parse(localStorage.getItem(LS)||"null");if(v)state=Object.assign({done:{},tests:{},pkg:""},v);}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){}}
+function persist(){
+  saveLocal(); dirty=true;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    if(mode!=="cloud"||!ref){dirty=false;return;}
+    const snap=JSON.parse(JSON.stringify(state));
+    writing=writing.then(()=>ref.set(snap)).then(()=>{dirty=false;},e=>{dirty=false;note("Couldn't save to your account. Progress is kept in this browser.");});
+  },500);
+}
+function note(t){document.getElementById("saveNote").textContent=t;}
+
+async function initStore(){
+  loadLocal(); renderAll();
+  note("Progress saves in this browser.");
+  try{
+    if(!window.claude||!window.claude.use)return;
+    const [db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);
+    const id=user?await user.id():null;
+    if(!db||!id)return;
+    ref=db.doc("data/users/"+id+"/progress");
+    const t=setTimeout(()=>note("Can't reach your saved progress yet. Using this browser's copy."),10000);
+    ref.onSnapshot(s=>{
+      if(!s.metadata.fromCache)clearTimeout(t);
+      mode="cloud";
+      note("Progress saves to your account and syncs across devices.");
+      if(dirty||s.metadata.hasPendingWrites)return;
+      if(s.exists){const d=s.data();state={done:Object.assign({},d.done||{}),tests:Object.assign({},d.tests||{}),pkg:d.pkg||""};saveLocal();renderAll();}
+      else if(Object.keys(state.done).length||Object.keys(state.tests).length||state.pkg){persist();}
+    },e=>{clearTimeout(t);mode="local";note("Progress saves in this browser.");});
+  }catch(e){}
+}
+
+/* ---------- render ---------- */
+function itemHTML(i){
+  const nums=[...new Set([...i.matchAll(/<span class="s">S(\d+)<\/span>/g)].map(m=>+m[1]))];
+  const links=nums.map(n=>seriesWatch(n,nums.length>1)).join("");
+  return `<li><span class="li-text">${i}</span>${links?`<span class="li-watch">${links}</span>`:""}</li>`;
+}
+function blockHTML(b){return `<div class="block"><h4>${b.name}<span>${b.time||""}</span></h4><ul>${b.items.map(itemHTML).join("")}</ul></div>`;}
+function sessionCard(d,showNav){
+  const isDone=!!state.done[d.id];
+  return `<article class="card stack">
+    <div class="session-head">
+      <div class="stack" style="gap:4px">
+        <div class="eyebrow">${d.phase.name.split(" · ")[0]} · Week ${d.week.n}: ${d.week.title}</div>
+        <h2>${d.label}</h2>
+        <p class="muted">${d.week.focus}</p>
+      </div>
+      <span class="tag ${isDone?"done":""}">${isDone?"Done":"About 70 min"}</span>
+    </div>
+    ${d.blocks.map(blockHTML).join("")}
+    <div class="actions">
+      <button class="btn ${isDone?"":"good"}" data-toggle="${d.id}">${isDone?"Mark not done":"Mark session done"}</button>
+      <button class="btn" data-copy="${d.id}">Copy for Notes</button>
+      ${showNav?`<button class="btn" data-goto="plan">See full plan</button>`:""}
+    </div>
+  </article>`;
+}
+function renderToday(){
+  const next=ALL.find(d=>!state.done[d.id]);
+  const el=document.getElementById("tab-today");
+  if(!next){el.innerHTML=`<article class="card stack"><h2>All 8 weeks done</h2><p>Keep the handle sharp: 3 days a week, 20 minutes, rotating one course week per day (Week 1, 2, 3). Play as much as you can, and retest every 4 weeks on the Tests tab.</p></article>`;return;}
+  el.innerHTML=`<p class="muted">Your next session. Rest one day a week: stretch, ice if sore, and watch your film.</p>`+sessionCard(next,true)+guardRules();
+}
+function guardRules(){
+  return `<article class="card stack"><h3>Rules on every rep</h3><ul class="rules">
+  <li>Base just outside shoulder width. Stay low, ball below the knees.</li>
+  <li>Pound the ball hard. Your arms do the work, your torso stays quiet.</li>
+  <li>Relax between moves, then go low and explosive on the move.</li>
+  <li>Add the extra step or twitch to sell it.</li>
+  <li>10 clean, fast reps in a row before you call a drill done.</li></ul></article>`;
+}
+function renderPlan(){
+  const el=document.getElementById("tab-plan");
+  el.innerHTML=PHASES.map(p=>`<section class="phase">
+    <div class="phase-intro"><div class="eyebrow">${p.span}</div><h2>${p.name.split(" · ")[1]}</h2><p class="muted">${p.intro}</p></div>
+    ${p.weeks.map(w=>{const n=w.days.filter(d=>state.done[d.id]).length;const first=ALL.find(d=>!state.done[d.id]);const open=first&&first.week===w;
+      return `<details class="week" ${open?"open":""}><summary><div class="week-title"><span class="eyebrow">Week ${w.n}</span><b>${w.title}</b></div><span class="pill">${n} / ${w.days.length}</span></summary>
+      <div class="week-body"><p class="week-focus">${w.focus}</p>${WEEK_LESSON[w.n]?`<div>${watchLink(WEEK_LESSON[w.n],"Watch the week "+w.n+" intro","Watch the course's Week "+w.n+" intro video")}</div>`:""}
+      ${w.days.map(d=>`<div class="day ${state.done[d.id]?"isdone":""}"><input type="checkbox" id="cb-${d.id}" data-check="${d.id}" ${state.done[d.id]?"checked":""} aria-label="${d.label} done">
+        <div class="day-main"><button data-open="${d.id}">${d.label}</button><span class="day-sum">${d.sum}</span></div></div>`).join("")}
+      </div></details>`;}).join("")}
+  </section>`).join("")+`<p class="muted">Day 7 of each week is rest. After Week 8, keep 3 handle days a week (20 min) and retest every 4 weeks.</p>`;
+}
+function renderTests(){
+  const el=document.getElementById("tab-tests");
+  el.innerHTML=`<article class="card stack"><h2>Benchmarks</h2><p class="muted">Test before you start, then at the end of Weeks 3, 6 and 8. Same court, same ball, fresh legs (except the free throws).</p>
+  <div class="tbl-wrap"><table><thead><tr><th>Test</th>${CHECKS.map(c=>`<th>${c[1]}</th>`).join("")}</tr></thead><tbody>
+  ${TESTS.map(t=>`<tr><td><b>${t.name}</b><div class="unit">${t.how} · ${t.unit}${t.better==="down"?" · lower is better":""}</div></td>
+    ${CHECKS.map(c=>{const k=t.id+"@"+c[0];return `<td><input inputmode="decimal" id="in-${k}" data-test="${k}" value="${state.tests[k]??""}" aria-label="${t.name}, ${c[1]}"></td>`;}).join("")}</tr>`).join("")}
+  </tbody></table></div></article>
+  <article class="card stack"><h2>My package</h2><p class="muted">For Phase 3. One size-up from S44 plus two counters from S39, S40, S42 or S43. Example: tween-cross size-up → cross jab tween (S39) or misdirection into combo (S40).</p>
+  <textarea id="pkg" aria-label="My package" placeholder="Size-up: …&#10;Counter 1: …&#10;Counter 2: …">${(state.pkg||"").replace(/</g,"&lt;")}</textarea></article>`;
+}
+function renderMoves(){
+  const el=document.getElementById("tab-moves");
+  const groups=[["Week 1 · Foundations",1,16],["Week 2 · Pace and direction",17,30],["Week 3 · Elite combos",31,45]];
+  el.innerHTML=`<p class="muted">What each series is for in a game, from the course descriptions. Watch opens that lesson's video in your Stan course (you need to be signed in to Stan).</p>`+
+  groups.map(g=>`<article class="card stack"><h3>${g[0]}</h3><div class="moves">${Array.from({length:g[2]-g[1]+1},(_,i)=>g[1]+i).map(n=>`<div class="move"><span class="s">${n}</span><div><div class="move-head"><b>${S[n]}</b>${seriesWatch(n,false)}</div><span>${GAME_USE[n]}</span></div></div>`).join("")}</div></article>`).join("");
+}
+function renderHeader(){
+  const n=ALL.filter(d=>state.done[d.id]).length;
+  document.getElementById("doneCount").textContent=n;
+  document.getElementById("totalCount").textContent=ALL.length;
+  document.getElementById("bar").style.width=(n/ALL.length*100)+"%";
+}
+function renderAll(){
+  const a=document.activeElement;
+  const typing=a&&(a.matches("[data-test]")||a.id==="pkg");
+  renderHeader();renderToday();renderPlan();if(!typing)renderTests();renderMoves();
+}
+
+/* ---------- copy ---------- */
+function plain(h){const d=document.createElement("div");d.innerHTML=h;d.querySelectorAll(".watch").forEach(a=>a.remove());return d.textContent;}
+function sessionText(d){
+  let t=`MEKAEL'S DEVELOPMENT PLAN — Week ${d.week.n} (${d.week.title}), ${d.label}\n${d.week.focus}\n`;
+  d.blocks.forEach(b=>{t+=`\n${b.name.toUpperCase()}${b.time?" ("+b.time+")":""}\n`+b.items.map(i=>"- "+plain(i)).join("\n")+"\n";});
+  return t;
+}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),1800);}
+async function copyText(txt){
+  try{await navigator.clipboard.writeText(txt);toast("Copied. Paste it into Notes.");}
+  catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();
+    let ok=false;try{ok=document.execCommand("copy");}catch(_){}
+    ta.remove(); toast(ok?"Copied. Paste it into Notes.":"Copy was blocked here. Select the text and copy it yourself.");}
+}
+
+/* ---------- events ---------- */
+let current="today";
+function showTab(name){current=name;document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===name));
+  ["today","plan","tests","moves"].forEach(t=>document.getElementById("tab-"+t).hidden=t!==name);
+  try{localStorage.setItem(LS+".tab",name);}catch(e){} window.scrollTo(0,0);}
+document.querySelector("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(b)showTab(b.dataset.tab);});
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-toggle]");
+  if(t){const id=t.dataset.toggle;if(state.done[id])delete state.done[id];else{state.done[id]=new Date().toISOString().slice(0,10);toast("Session logged.");}persist();renderAll();return;}
+  const c=e.target.closest("[data-copy]");if(c){copyText(sessionText(ALL.find(d=>d.id===c.dataset.copy)));return;}
+  const g=e.target.closest("[data-goto]");if(g){showTab(g.dataset.goto);return;}
+  const o=e.target.closest("[data-open]");
+  if(o){const d=ALL.find(x=>x.id===o.dataset.open);const el=document.getElementById("tab-today");
+    el.innerHTML=`<p class="muted">Viewing a session from the plan.</p>`+sessionCard(d,true)+guardRules();showTab("today");}
+});
+document.addEventListener("change",e=>{
+  const cb=e.target.closest("[data-check]");
+  if(cb){const id=cb.dataset.check;if(cb.checked)state.done[id]=new Date().toISOString().slice(0,10);else delete state.done[id];persist();renderAll();}
+});
+document.addEventListener("input",e=>{
+  const i=e.target.closest("[data-test]");
+  if(i){const v=i.value.trim();if(v)state.tests[i.dataset.test]=v;else delete state.tests[i.dataset.test];persist();return;}
+  if(e.target.id==="pkg"){state.pkg=e.target.value;persist();}
+});
+
+try{const t=localStorage.getItem(LS+".tab");if(t&&t!=="today")showTab(t);}catch(e){}
+initStore();
+</script>
+</body>
+</html>
