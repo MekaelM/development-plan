@@ -74,7 +74,19 @@ main{display:grid;gap:40px;margin-top:32px}
 .block h4{margin:0;font-size:.85rem;font-weight:600;display:flex;justify-content:space-between;gap:8px}
 .block h4 span{color:var(--muted);font-weight:400}
 .block ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
-.block li{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.block li{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.drills{flex-basis:100%;margin-top:2px}
+.drills>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted);user-select:none}
+.drills>summary::-webkit-details-marker{display:none}
+.drills>summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s}
+.drills[open]>summary::before{transform:rotate(45deg)}
+.drills>summary:hover{color:var(--ink)}
+.drills-body{margin-top:8px;padding:12px 14px;background:var(--soft);border-radius:8px;display:grid;gap:8px;font-size:.88rem}
+.drills-body ul{margin:0;padding-left:18px;display:grid;gap:4px;list-style:disc}
+.drills-body li{display:list-item}
+.drills-body p{color:var(--muted)}
+.drills-body b{color:var(--ink);font-weight:500}
+.move .drills{margin-top:6px}
 .li-text{min-width:0}
 .li-watch{display:flex;gap:12px;flex-shrink:0}
 .s{font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;margin-right:2px}
@@ -170,6 +182,62 @@ const WEEK_LESSON={1:IDS[1],2:IDS[18],3:IDS[33]};
 const PLAY='<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1l7 4-7 4z"/></svg>';
 const watchLink=(id,label,aria)=>`<a class="watch" href="${COURSE_URL}${id}" target="_blank" rel="noopener" aria-label="${aria}">${PLAY}${label}</a>`;
 const seriesWatch=(n,short)=>watchLink(seriesLesson(n),short?"S"+n:"Watch",`Watch the Series ${n} video`);
+
+// [drills, tip, common mistakes] per series
+const DRILLS = {
+1:[["Knee-height pounds: 50 each hand or 30 s","Shoulder-height pounds: 50 each hand or 30 s","Ankle-height pounds: 100 each hand or 30 s","Around-the-ankle low dribbles: 20 each hand or 30 s","Low figure 8: 20 total or 30 s","3 high pounds into 5 low: 10 each hand or 30 s"],"Low base, max force but controlled. On the lows use fingertips and wrists, as fast as you can. Shoulders and forearms should burn.",["Dribbling too soft","Body moving too much"]],
+2:[["Pound V side to side (wide): 10 each hand","V side to side (wide): 20 each hand","Pound V side to side (slim): 10 each hand","V side to side (slim): 20 each hand","Pound V back and forth: 10 each hand","V back and forth: 20 each hand","Pound V tween: 10 each hand","V tween: 20 each hand","Pound V side to side into back and forth: 5 each hand","V side to side into back and forth: 10 each hand","Pound V side to side into pound V tween: 5 each hand","All drills: or 30 s"],"Base just outside shoulder width. Ball below the knees, body still, only the ball moves.",["Rocking the body","Too high","Too soft"]],
+3:[["Pound pocket: 20 each hand or 30 s","Over-and-back pocket: 10 each hand or 30 s"],"Hold the pocket as long as you can without carrying. Don't rush.",["Too soft","Too high"]],
+4:[["Pound single-side tween: 10 each hand","Single-side tween: 10 each hand","Pound single-side inverted tween: 10 each hand","Single-side inverted tween: 10 each hand","Pound single-side back-and-forth tween: 10 each hand","Single-side back-and-forth tween: 10 each hand","All drills: or 30 s"],"Take your time and let your arms do the work.",["Body moving too much","Base too wide or too narrow"]],
+5:[["Pound crossover / continuous crossover","Pound tween / continuous tween","Pound behind the back / continuous behind the back","Pound inverted tween (snatch) / continuous inverted tween","Each: 20 total or 30 s"],"Ball below the knees, as fast as you can.",["Too high","Shifting the body too much"]],
+6:[["V cross","V tween","V behind","V snatch","Each: 20 total or 30 s"],"Stay low and go from the V dribble into the move as fast as possible.",["Too high","Rocking the torso: arms do the work, not momentum"]],
+7:[["Cross pocket","Tween pocket","Behind pocket","Snatch pocket","Each: 20 total or 30 s"],"Long, patient pocket, then an aggressive move you still control.",["Rushing the pocket","Pocket not far back or long enough","Torso square: turning it is fine to exaggerate the pocket"]],
+8:[["Pound tween-cross: 10 each side","Continuous tween-cross: 20 each side","Pound tween-behind: 10 each side","Continuous tween-behind: 20 each side","Pound tween-snatch: 10 each side","Continuous tween-snatch: 20 each side","Pound cross-behind: 10 each side","Continuous cross-behind: 20 each side","All drills: or 30 s"],"Stay low with the ball below the knees the whole time. Minimal torso movement.",["Ball above the knees","Weak pound between combos","Pausing between combos"]],
+9:[["Continuous cross-tween-behind","Continuous double cross-tween","Continuous tween-double behind","Continuous cross-double behind","Each: 20 total or 30 s"],"Feet stationary, good base. Chain the moves as fast as you can, ball low.",["Standing too tall","Ball above the knees","Weak pounds","Torso moving"]],
+10:[["V dribble into cross-tween-double behind","V dribble into tween-snatch-tween-cross","V dribble into double behind-cross-tween"],"Strong, high first pound, then drop low and tight for the V and the combo.",["Weak first pound","Staying high on the combo","Rocking the body"]],
+11:[["V skips: 10 each hand, forward and back","V tween skips: 10 each hand, forward and back","Crossover skips: 10, forward and back","Tween skips: 10, forward and back","Behind-the-back skips: 10, forward and back","Snatch skips: 10, forward and back"],"Start slow to find the rhythm. Pound hard.",["Rushing","Too soft","Too low: higher is harder to control"]],
+12:[["Crossovers on the move: 10–20 forward","Tweens on the move: 10–20 forward and back","Behind the back on the move: 10–20 forward and back","Inverted tweens on the move: 10–20 forward and back"],"Pound hard and push your speed. Later, vary the height and width.",["Steps too big: fit many moves in a small space","Too soft"]],
+13:[["Tween-cross: 10–20 each side","Tween-behind: 10–20 each side","Tween-snatch: 10–20 each side","Cross-behind: 10–20 each side"],"Short, choppy steps. Ball below the knees, as fast as you can.",["Too high","Steps too big"]],
+14:[["Cross-tween-behind: 10–20 forward","Double cross-tween: 10–20 forward","Double tween-behind: 10–20 forward","Cross-double behind: 10–20 forward"],"Low, short choppy steps, quick and smooth.",["Too high","Big steps","Base too narrow"]],
+15:[["Pound V into cross-tween-double behind","Pound V into tween-snatch-tween-cross","Pound V into double behind-cross-tween"],"Aggressive high pound, then break down on the V into the combo with choppy steps.",["Too high on the combo","Pound too low or soft","Rushing the V"]],
+16:[["V dribbles: 10–20 each side","V tween: 10–20 each side","Single-leg tween: 10–20 each side","Inverted single-leg tween: 10–20 each side","Back and forth under the leg: 10–20 each side","All moving forward"],"Low on the Vs. Get the ball through the legs as fast as you can.",["Too high","Body moving: arms only"]],
+17:[["Pound cross: 10 total","Pound tween: 10 total","Pound behind: 10 total","Pound snatch: 10 total"],"Stay low, ball below the knees, change direction as fast as you can.",["Too high","Too soft","Ball too far from the body"]],
+18:[["Pound in-and-out: 10 each side","In-and-out cross: 10 total","In-and-out tween: 10 total","In-and-out behind: 10 total","In-and-out snatch: 10 total"],"Load your weight onto the leg you step with, then push off it.",["Rushing: sell it fully","Not dropping low on the in-and-out"]],
+19:[["Punch cross: 10 total","Punch tween: 10 total","Punch behind: 10 total","Punch snatch: 10 total"],"Pound hard, punch, then explode out low with the right footwork.",["Too high","Bad footwork out of the move"]],
+20:[["Cross snatch back: 10 total","Tween snatch back: 10 total","Behind snatch back: 10 total","Inverted snatch back: 10 total"],"Stay low, whip the ball back hard, explode out.",["Too high","Wrong footwork"]],
+21:[["Cross float: 10 total","Tween float: 10 total","Behind float: 10 total","Snatch float: 10 total"],"Aggressive, fast pound with a relaxed body on the float.",["Rushing the float","Too soft"]],
+22:[["Hesi go: 5 each side","Hesi cross: 10 total","Hesi tween: 10 total","Hesi behind: 10 total","Hesi snatch: 10 total"],"Relax, shift your weight and push off the back leg on the hesi. Get low on the move.",["Rushing the hesi","Too high on the move"]],
+23:[["Cross jab: 10 total","Tween jab: 10 total","Behind jab: 10 total"],"Step and shift hard on the jab. Relax between reps, attack on the move.",["Not selling the jab","Too high","Not relaxing between reps"]],
+24:[["Scissor cross: 10 total","Scissor tween: 10 total","Scissor behind: 10 total","Scissor snatch: 10 total"],"Don't rush the scissor. Bring the foot back and explode off it.",["Rushing the scissor step","Too high on the move"]],
+25:[["Heavy-step cross: 10 total","Heavy-step tween: 10 total","Heavy-step behind: 10 total","Heavy-step snatch: 10 total"],"Slow heavy step with the ball in the pocket, then a quick, aggressive move.",["Rushing the heavy step","Too high","Move itself too slow"]],
+26:[["Delayed tween: 10 total","Delayed behind: 10 total","Delayed cross: 10 total"],"Timing: shift your weight back, then explode. You can go high to low.",["Overthinking it: let it flow"]],
+27:[["Double cross: 5 each side","Double tween: 5 each side","Double behind: 5 each side","Double behind (wrap): 5 each side"],"Relax between combos, then low, quick, shift your weight and add a twitch.",["Rushing between moves","No weight shift","Too high on the combo"]],
+28:[["Tween-cross: 5 each side","Tween-behind: 5 each side","Tween-snatch: 5 each side"],"Relax between moves, then low, shift your weight and twitch off the tween.",["No change of height or pace between moves","Too high on the combo","No twitch or weight shift"]],
+29:[["Cross-tween: 5 each side","Cross-behind: 5 each side","Cross-snatch: 5 each side"],"Relax, then low with a weight shift and the extra step to sell it.",["Too high on the combo","No extra step or twitch"]],
+30:[["Behind-cross: 5 each side","Behind-tween: 5 each side","Behind-snatch: 5 each side"],"Relax, then low and shift. Pound as hard as you can as you sell the move.",["Too high on the move","Too soft","No extra twitch"]],
+31:[["In-and-out punch: 10 total","Cross punch: 10 total","Tween punch: 10 total","Behind wrap punch: 10 total"],"Load the front leg on the punch to sell the drive. Relax on the reset.",["Soft punch","Too high on the punch"]],
+32:[["Cross-step crossover: 10 total or 30 s","Cross-step tween: 10 total or 30 s","Cross-step behind: 10 total or 30 s","Cross-step snatch: 10 total or 30 s","Cross-step cross-tween-behind: 10 total or 30 s"],"Step all the way across. As you open up, attack and pocket the ball to protect it.",["Not stepping all the way over","Too high when opening up"]],
+33:[["Cross-tween-behind: 10 total","Double tween-behind: 10 total","Tween-double behind: 10 total"],"Stay low, keep it tight, fit in as many combos as you can moving forward.",["Too high","Ball too far from the body","Running instead of quick, twitchy steps"]],
+34:[["Tween-cross into tween float","Tween-behind into behind float","Double cross into tween float","Double tween into behind float","Double behind into cross float","Cross-behind into behind float","Tween-snatch into tween float","Each: 10 total or 30 s"],"Relax on the float, then low and quick on the combo with an extra twitch.",["One height the whole time","One pace the whole time","No twitch to sell it"]],
+35:[["Tween-double behind into inverted tween snatch back: 10 total","Hesi cross-tween cross into tween snatch back: 10 total","In-and-out cross-tween-behind into cross snatch back: 10 total","Double behind-hesi tween-behind snatch back: 10 total"],"Low combos, then the hardest snatch you can. Relax on the walk back.",["Too high on the combo","Snatch footwork"]],
+36:[["Cross stop into tween-cross: 10 total","Tween stop into tween-behind: 10 total","Behind stop into tween-snatch: 10 total","Snatch stop into tween-cross: 10 total"],"Cover ground after the combo, then snatch hard. Start slow to learn the footwork.",["Carrying between moves","Too high","Footwork"]],
+37:[["Scissor cross into tween-cross: 10 total","Scissor tween into behind-snatch: 10 total","Scissor double behind into tween: 10 total","Scissor snatch into tween-cross: 10 total"],"Relax on the scissor, push off that leg, get low for the combo.",["Rushing the scissor step","Too high on the combo"]],
+38:[["Cross step into double cross-behind: 10 total","Cross step into tween-cross-tween: 10 total","Cross step into double behind-cross: 10 total"],"Bring the foot all the way across, then open up and sell the combo quickly.",["Not stepping all the way over","Too high on the combo","Rushing the footwork"]],
+39:[["Cross jab cross: 10 total","Cross jab tween: 10 total","Cross jab behind: 10 total","Tween jab cross: 10 total","Tween jab tween: 10 total","Behind jab cross: 10 total","Behind jab tween: 10 total"],"Stay low and sell each move with your weight. Relax on the reset. Speed up as you improve.",["Too high","Rushing each move: sell every one"]],
+40:[["Cross misdirection into tween-behind: 10 total","Tween misdirection into double cross: 10 total","Behind misdirection into cross-tween: 10 total"],"Shift forward, push off for a quick misdirection, then get low for the combo.",["Not creating enough space","Rushing: quick dribble, but keep your pace"]],
+41:[["Hesi tween-behind-snatch-behind punch: 10 total","Tween-cross-behind-hesi cross-cross step: 10 total","Tween-cross-tween-stop on a dime tween-tween cross punch: 10 total"],"Stay low for balance. Learn it slow, then get faster and more aggressive.",["Too high","Rushing: one move at a time"]],
+42:[["Cross float into tween-cross into tween wrap behind into punch: 10 total","Tween float into tween-snatch into tween-cross into cross step: 10 total","Behind float into double cross into tween-snatch, punch left / cross step right: 10 total","Inverted tween float into double behind into cross-tween, cross step left / punch right: 10 total"],"Relax on the float, then low and twitchy. Attack, stop hard, back it out.",["Too high on the combo","No weight shift","No extra steps or twitches"]],
+43:[["Misdirection cross into double behind into double cross-tween into behind snatch back: 10 total","Misdirection tween into tween-double behind into tween-cross into inverted tween snatch back: 10 total","Misdirection behind into double cross into double tween-behind into tween snatch back: 10 total"],"Don't rush the misdirection. Create space, then break down low and attack into the snatch.",["Stiff misdirection with no weight shift","Too high on the combos","Rushing the whole drill"]],
+44:[["Tween-cross size-up: 10 each side","Hesi cross-tween size-up: 10 each side","Tween-snatch size-up: 10 each side","All three as one package: 5 each side"],"Tight and low, ball below the knees. Make the twitch move more explosive than the size-up and add the extra step.",["Too high","No extra twitch","Overthinking it: have fun with it"]],
+45:[["Shamgod: 10 total","Shamgod tween: 10 total"],"Keep the ball close and pound it hard.",["Too high","Too soft"]]
+};
+function drillsHTML(n){
+  const d=DRILLS[n]; if(!d) return "";
+  return `<details class="drills"><summary>Drills and tips</summary><div class="drills-body">
+    <ul>${d[0].map(x=>`<li>${x}</li>`).join("")}</ul>
+    <p><b>Tip:</b> ${d[1]}</p>
+    <p><b>Common mistakes:</b> ${d[2].join(" · ")}</p></div></details>`;
+}
 
 const GAME_USE = {
   1:"Base control at every height. Stops you losing the ball in traffic.",2:"Hands moving around the ball. Feeds every move later.",3:"Ball protection and the start of changing pace.",4:"Weak-hand control and tight-space escapes.",
@@ -334,7 +402,8 @@ async function initStore(){
 function itemHTML(i){
   const nums=[...new Set([...i.matchAll(/<span class="s">S(\d+)<\/span>/g)].map(m=>+m[1]))];
   const links=nums.map(n=>seriesWatch(n,nums.length>1)).join("");
-  return `<li><span class="li-text">${i}</span>${links?`<span class="li-watch">${links}</span>`:""}</li>`;
+  const lead=i.match(/^<span class="s">S(\d+)<\/span>/);
+  return `<li><span class="li-text">${i}</span>${links?`<span class="li-watch">${links}</span>`:""}${lead?drillsHTML(+lead[1]):""}</li>`;
 }
 function blockHTML(b){return `<div class="block"><h4>${b.name}<span>${b.time||""}</span></h4><ul>${b.items.map(itemHTML).join("")}</ul></div>`;}
 function sessionCard(d,showNav){
@@ -396,7 +465,7 @@ function renderMoves(){
   const el=document.getElementById("tab-moves");
   const groups=[["Week 1 · Foundations",1,16],["Week 2 · Pace and direction",17,30],["Week 3 · Elite combos",31,45]];
   el.innerHTML=`<p class="muted">What each series is for in a game, from the course descriptions. Watch opens that lesson's video in your Stan course (you need to be signed in to Stan).</p>`+
-  groups.map(g=>`<article class="card stack"><h3>${g[0]}</h3><div class="moves">${Array.from({length:g[2]-g[1]+1},(_,i)=>g[1]+i).map(n=>`<div class="move"><span class="s">${n}</span><div><div class="move-head"><b>${S[n]}</b>${seriesWatch(n,false)}</div><span>${GAME_USE[n]}</span></div></div>`).join("")}</div></article>`).join("");
+  groups.map(g=>`<article class="card stack"><h3>${g[0]}</h3><div class="moves">${Array.from({length:g[2]-g[1]+1},(_,i)=>g[1]+i).map(n=>`<div class="move"><span class="s">${n}</span><div><div class="move-head"><b>${S[n]}</b>${seriesWatch(n,false)}</div><span>${GAME_USE[n]}</span>${drillsHTML(n)}</div></div>`).join("")}</div></article>`).join("");
 }
 function renderHeader(){
   const n=ALL.filter(d=>state.done[d.id]).length;
@@ -411,7 +480,7 @@ function renderAll(){
 }
 
 /* ---------- copy ---------- */
-function plain(h){const d=document.createElement("div");d.innerHTML=h;d.querySelectorAll(".watch").forEach(a=>a.remove());return d.textContent;}
+function plain(h){const d=document.createElement("div");d.innerHTML=h;d.querySelectorAll(".watch,.drills").forEach(a=>a.remove());return d.textContent;}
 function sessionText(d){
   let t=`MEKAEL'S DEVELOPMENT PLAN — Week ${d.week.n} (${d.week.title}), ${d.label}\n${d.week.focus}\n`;
   d.blocks.forEach(b=>{t+=`\n${b.name.toUpperCase()}${b.time?" ("+b.time+")":""}\n`+b.items.map(i=>"- "+plain(i)).join("\n")+"\n";});
